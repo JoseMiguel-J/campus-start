@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ projeto.titulo }}</h2>
+<p><strong>Autor:</strong> {{ projeto.autor.nome }} ({{ projeto.autor.curso }} - {{ projeto.autor.faculdade }})</p>
+<span class="badge" style="font-size: 1rem; padding: 5px 15px;">Etapa: {{ projeto.etapa }}</span>
+
+{% if current_user.id == projeto.autor_id or current_user.is_admin %}
+    <div style="float: right;">
+        
+        {% if current_user.id == projeto.autor_id %}
+        <form method="POST" style="display: inline;">
+            <input type="hidden" name="acao" value="avancar_etapa">
+            <button type="submit" class="btn">Avançar Etapa</button>
+        </form>
+        {% endif %}
+        
+        <form method="POST" action="/apagar_projeto/{{ projeto.id }}" style="display: inline; margin-left: 10px;" onsubmit="return confirm('Tens a certeza que queres apagar este projeto?');">
+            <button type="submit" class="btn" style="background-color: #dc3545;">Apagar Projeto</button>
+        </form>
+    </div>
+{% endif %}
+<div style="clear: both;"></div>
+
+<div class="card" style="margin-top: 20px;">
+    <h3>Problema</h3>
+    <p>{{ projeto.problema }}</p>
+    <h3>Solução Proposta</h3>
+    <p>{{ projeto.solucao }}</p>
+    <h3>Competências Necessárias</h3>
+    <p>{{ projeto.competencias }}</p>
+</div>
+
+<div style="display: flex; gap: 20px;">
+    <!-- Comentários -->
+    <div style="flex: 2;">
+        <h3>Comentários e Sugestões</h3>
+        {% for c in projeto.comentarios %}
+            <div class="card">
+                <strong>{{ c.autor_nome }}:</strong> {{ c.texto }}
+            </div>
+        {% endfor %}
+        
+        {% if current_user.is_authenticated %}
+        <form method="POST">
+            <input type="hidden" name="acao" value="comentar">
+            <div class="form-group">
+                <textarea name="comentario" rows="2" required placeholder="Escreve uma sugestão..."></textarea>
+            </div>
+            <button type="submit" class="btn" style="padding: 5px 10px; font-size: 0.9rem;">Enviar Comentário</button>
+        </form>
+        {% endif %}
+    </div>
+
+    <!-- Pedidos de Colaboração -->
+    <div style="flex: 1;">
+        <h3>Colaboração</h3>
+        {% if current_user.is_authenticated and current_user.id != projeto.autor_id %}
+            <div class="card">
+                <h4>Quero ajudar!</h4>
+                <form method="POST">
+                    <input type="hidden" name="acao" value="colaborar">
+                    <div class="form-group">
+                        <label>Área de contribuição</label>
+                        <input type="text" name="area" required placeholder="Ex: Design, Backend...">
+                    </div>
+                    <button type="submit" class="btn" style="padding: 5px 10px; font-size: 0.9rem;">Pedir para Colaborar</button>
+                </form>
+            </div>
+        {% endif %}
+
+        {% if current_user.id == projeto.autor_id %}
+            <h4>Pedidos Recebidos:</h4>
+            {% for p in projeto.pedidos %}
+                <div class="card">
+                    <p><strong>{{ p.usuario_nome }}</strong> quer ajudar em: {{ p.area_contribuicao }}</p>
+                    <p>Status: <strong>{{ p.status }}</strong></p>
+                    {% if p.status == 'Pendente' %}
+                        <form method="POST">
+                            <input type="hidden" name="acao" value="aceitar">
+                            <input type="hidden" name="pedido_id" value="{{ p.id }}">
+                            <button type="submit" class="btn" style="padding: 5px; font-size: 0.8rem;">Aceitar</button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p>Nenhum pedido ainda.</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

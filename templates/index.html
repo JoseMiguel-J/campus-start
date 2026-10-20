@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Projetos Estudantis</h2>
+<p>Explora ideias e junta-te a uma equipa.</p>
+<hr>
+{% for projeto in projetos %}
+    <div class="card">
+        <h3><a href="/projeto/{{ projeto.id }}" style="color: var(--primary); text-decoration: none;">{{ projeto.titulo }}</a></h3>
+        <p><strong>Autor:</strong> {{ projeto.autor.nome }} ({{ projeto.autor.curso }})</p>
+        <p><strong>Competências necessárias:</strong> {{ projeto.competencias }}</p>
+        <span class="badge">Etapa: {{ projeto.etapa }}</span>
+        <a href="/projeto/{{ projeto.id }}" class="btn" style="float: right; padding: 5px 10px; font-size: 0.9rem;">Ver Detalhes</a>
+        <div style="clear: both;"></div>
+    </div>
+{% else %}
+    <p>Nenhum projeto submetido ainda. Sê o primeiro!</p>
+{% endfor %}
+{% endblock %}

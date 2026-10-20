@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Submeter Novo Projeto</h2>
+<form method="POST">
+    <div class="form-group">
+        <label>Título do Projeto</label>
+        <input type="text" name="titulo" required>
+    </div>
+    <div class="form-group">
+        <label>Problema a Resolver</label>
+        <textarea name="problema" rows="3" required></textarea>
+    </div>
+    <div class="form-group">
+        <label>Proposta de Solução</label>
+        <textarea name="solucao" rows="3" required></textarea>
+    </div>
+            <!-- Grelha de Competências baseada nos Cursos da UNISAVE -->
+    <div class="form-group">
+        <label>Competências Necessárias (Selecione de que cursos precisas)</label>
+        <p style="font-size: 0.85rem; color: #666; margin-top: 0; margin-bottom: 10px;">Seleciona os cursos cujos conhecimentos são necessários para o teu projeto.</p>
+        
+        <style>
+            .skills-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 10px;
+                margin-top: 10px;
+            }
+            .skill-item {
+                display: flex;
+                align-items: center;
+                background: #f9f9f9;
+                padding: 10px;
+                border-radius: 4px;
+                border: 1px solid #ddd;
+                cursor: pointer;
+                transition: 0.2s;
+                font-size: 0.9rem;
+            }
+            .skill-item:hover { background: #eef5f8; border-color: #1a4f5f; }
+            .skill-item input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); cursor: pointer;}
+            .faculty-title { grid-column: 1 / -1; font-weight: bold; color: #1a4f5f; margin-top: 15px; margin-bottom: 5px; border-bottom: 1px solid #ddd; padding-bottom: 5px; font-size: 0.95rem;}
+        </style>
+
+        <div class="skills-grid">
+            <!-- Engenharias e Tecnologias -->
+            <div class="faculty-title">Engenharias e Tecnologias</div>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Ciências da Computação"> Ciências da Computação</label>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Informática"> Informática</label>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Educação Visual"> Educação Visual</label>
+            
+            <!-- Economia e Administração -->
+            <div class="faculty-title">Economia e Administração</div>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Marketing de Produção e Inovação"> Marketing / Inovação</label>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Administração Pública"> Administração Pública</label>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Gestão de Recursos Humanos"> Gestão de Recursos Humanos</label>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Economia"> Economia</label>
+
+            <!-- Letras e Humanidades -->
+            <div class="faculty-title">Letras e Humanidades</div>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Ensino de Português"> Língua Portuguesa</label>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Inglês Aplicado ao Turismo"> Inglês / Turismo</label>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Secretariado Executivo"> Secretariado Executivo</label>
+
+            <!-- Educação e Psicologia -->
+            <div class="faculty-title">Educação e Psicologia</div>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Psicologia"> Psicologia</label>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Ensino Básico"> Ensino Básico</label>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Ciências de Educação"> Ciências de Educação</label>
+
+            <!-- Ciências Naturais e Exactas -->
+            <div class="faculty-title">Ciências Naturais e Exactas</div>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Estatística"> Estatística / Análise de Dados</label>
+
+            <!-- Ciências da Terra -->
+            <div class="faculty-title">Ciências da Terra e Recursos Naturais</div>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Geografia"> Geografia</label>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Gestão de Riscos e Desastres"> Gestão de Riscos Ambientais</label>
+
+            <!-- Ciências Agrárias -->
+            <div class="faculty-title">Ciências Agrárias</div>
+            <label class="skill-item"><input type="checkbox" name="competencias" value="Produção Agrícola"> Produção Agrícola / Agroecologia</label>
+        </div>
+    </div>
+    <button type="submit" class="btn">Publicar Projeto</button>
+</form>
+{% endblock %}

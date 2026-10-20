@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Criar Conta</h2>
+<form method="POST">
+    <div class="form-group">
+        <label>Nome Completo</label>
+        <input type="text" name="nome" required>
+    </div>
+    <div class="form-group">
+        <label>E-mail Institucional</label>
+        <input type="email" name="email" required>
+    </div>
+    <div class="form-group">
+        <label>Palavra-passe</label>
+        <input type="password" name="password" required>
+    </div>
+    <div class="form-group">
+        <label>Faculdade</label>
+        <select id="faculdade" name="faculdade" required onchange="atualizarCursos()">
+            <option value="">Selecione a sua faculdade...</option>
+            {% for faculdade in faculdades_cursos.keys() %}
+                <option value="{{ faculdade }}">{{ faculdade }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Curso</label>
+        <select id="curso" name="curso" required>
+            <option value="">Selecione primeiro a faculdade...</option>
+        </select>
+    </div>
+    <button type="submit" class="btn">Registar</button>
+</form>
+
+<script>
+    // Dados vindos do Python
+    const dadosCursos = {{ faculdades_cursos | tojson }};
+    
+    function atualizarCursos() {
+        const faculdadeSelect = document.getElementById('faculdade');
+        const cursoSelect = document.getElementById('curso');
+        const faculdadeSelecionada = faculdadeSelect.value;
+        
+        cursoSelect.innerHTML = '<option value="">Selecione o curso...</option>';
+        
+        if (faculdadeSelecionada && dadosCursos[faculdadeSelecionada]) {
+            dadosCursos[faculdadeSelecionada].forEach(function(curso) {
+                const option = document.createElement('option');
+                option.value = curso;
+                option.text = curso;
+                cursoSelect.appendChild(option);
+            });
+        }
+    }
+</script>
+{% endblock %}
